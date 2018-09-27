@@ -1,0 +1,5 @@
+    ServerName {{ item.hostname }}
+{% if item.server_alias is defined %}
+    ServerAlias {{ item.server_alias }}
+{% endif %}
+    DocumentRoot {{ item.root }}

@@ -1,0 +1,58 @@
+---
+- name: Install Apache
+  package:
+    name: apache2
+    state: present
+
+- name: Get Apache version
+  shell: "apache2 -v | awk -F/ '/\\// {print $2}' | awk '{print $1}'"
+  register: _apache_version
+
+- name: Set Apache major version variable
+  set_fact:
+    apache_version_major: "{{ _apache_version.stdout.split('.')[0] }}"
+
+- name: Set Apache minor version variable
+  set_fact:
+    apache_version_minor: "{{ _apache_version.stdout.split('.')[1] }}"
+
+- name: Set Apache patch version variable
+  set_fact:
+    apache_version_patch: "{{ _apache_version.stdout.split('.')[2] }}"
+
+- name: Add Apache virtual host for sites
+  template:
+    src: templates/vhost.conf.j2
+    dest: "/etc/apache2/sites-available/{{ item.hostname }}.conf"
+  loop: "{{ apache_vhosts }}"
+  notify: restart apache
+
+- name: Enable sites
+  command: "a2ensite {{ item.hostname }}.conf"
+  args:
+    creates: "/etc/apache2/sites-enabled/{{ item.hostname }}.conf"
+  loop: "{{ apache_vhosts }}"
+
+- name: Remove default virtual host
+  file:
+    path: "/etc/apache2/sites-enabled/000-default.conf"
+    state: absent
+  notify: restart apache
+
+- name: Enable Apache headers module
+  apache2_module:
+    name: headers
+  notify: restart apache
+
+- name: Enable additional Apache modules
+  apache2_module:
+    name: "{{ item.name }}"
+    state: "{{ item.state|default(present) }}"
+  loop: "{{ apache_modules }}"
+  notify: restart apache
+
+- name: Ensure Apache is started and enabled on boot
+  service:
+    name: apache2
+    state: started
+    enabled: yes

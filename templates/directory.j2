@@ -1,0 +1,5 @@
+    <Directory {{ item.root }}>
+        Options {{ apache_vhost_options }}
+        AllowOverride {{ apache_vhost_allow_override }}
+        Require {{ apache_vhost_require }}
+    </Directory>

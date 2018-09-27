@@ -1,0 +1,60 @@
+<VirtualHost {{ apache_ip_address }}:{{ apache_http_port }}>
+{% if apache_enable_http_to_https_redirect %}
+{% include 'server.j2' %}
+
+    Redirect permanent / https://{{ item.hostname }}
+{% else %}
+{% for header in apache_headers %}
+    Header always set {{ header }}
+{% endfor %}
+{% include 'server.j2' %}
+
+{% include 'directory.j2' %}
+
+{% include 'log.j2' %}
+{% endif %}
+</VirtualHost>
+
+{% if item.ssl_certificate is defined %}
+<VirtualHost {{ apache_ip_address }}:{{ apache_https_port }}>
+    SSLEngine on
+{% if apache_enable_ssl_cipher_suite and apache_ssl_cipher_suite != '' %}
+    SSLCipherSuite {{ apache_ssl_cipher_suite }}
+{% endif %}
+{% if apache_enable_ssl_protocol and apache_ssl_protocol != '' %}
+    SSLProtocol {{ apache_ssl_protocol }}
+{% endif %}
+{% if apache_enable_ssl_cipher_order %}
+    SSLHonorCipherOrder on
+{% endif %}
+{% if apache_version_minor|int >= 4 and apache_version_patch|int >= 3 and apache_disable_ssl_compression %}
+    SSLCompression off
+{% endif %}
+{% if apache_enable_ssl_stapling %}
+    SSLUseStapling on
+{% endif %}
+{% if apache_version_minor|int >= 4 and apache_version_patch|int >= 11 and apache_disable_ssl_session_tickets %}
+    SSLSessionTickets off
+{% endif %}
+    SSLCertificateFile {{ item.ssl_certificate }}
+    SSLCertificateKeyFile {{ item.ssl_certificate_key }}
+{% if item.ssl_certificate_chain is defined %}
+    SSLCertificateChainFile {{ item.ssl_certificate_chain }}
+{% endif %}
+{% for header in apache_headers %}
+    Header always set {{ header }}
+{% endfor %}
+{% for ssl_header in apache_ssl_headers %}
+    Header always set {{ ssl_header }}
+{% endfor %}
+{% include 'server.j2' %}
+
+{% include 'directory.j2' %}
+
+{% include 'log.j2' %}
+</VirtualHost>
+{% endif %}
+
+{% if apache_enable_ssl_stapling %}
+SSLStaplingCache "{{ apache_ssl_stapling_cache }}"
+{% endif %}
