@@ -47,36 +47,36 @@ apache_disable_ssl_session_tickets: false # Requires Apache >= 2.4.11
 Configure the Apache virtual host file by enabling/disabling these settings. The Apache `SSLCompression` directive requires version 2.4.3 and the directive `SSLSessionTickets` requires version 2.4.11.
 
 ```yaml
-apache_modules: []
-#- name: rewrite
-#- name: ssl
-#  state: absent
+apache_modules:
+- name: rewrite
+- name: ldap
+  state: absent
 ```
-A list of Apache modules to enable/disable. The default state is `present` to enable modules, use `absent` to disable a module.
+A list of Apache modules to enable/disable. The default state is `present`, use `absent` to disable a module.
 
 ```yaml
-apache_headers: []
-#- 'X-Frame-Options DENY'
-#- 'X-Content-Type-Options nosniff'
+apache_headers:
+- 'X-Frame-Options DENY'
+- 'X-Content-Type-Options nosniff'
 ```
 A list of Apache headers to include for virtual hosts.
 
 ```yaml
-apache_ssl_headers: []
-#- 'Strict-Transport-Security "max-age=63072000; includeSubDomains; preload"'
+apache_ssl_headers:
+- 'Strict-Transport-Security "max-age=63072000; includeSubDomains; preload"'
 ```
 A list of Apache headers to include in the HTTPS virtual host section.
 
 ```yaml
-apache_vhosts: []
-#- hostname: example.test
-#  alias: example
-#  root: /var/www/html
-#- hostname: example-ssl.test
-#  root: /var/www/html
-#  ssl_certificate: /etc/ssl/example-ssl.test/certificate.crt
-#  ssl_certificate_key: /etc/ssl/example-ssl.test/privatekey.pem
-#  ssl_certificate_chain: /etc/ssl/example-ssl.test/fullchain.pem
+apache_vhosts:
+- hostname: example.test
+  alias: example
+  root: /var/www/html
+- hostname: example-ssl.test
+  root: /var/www/html
+  ssl_certificate: /etc/ssl/example-ssl.test/certificate.crt
+  ssl_certificate_key: /etc/ssl/example-ssl.test/privatekey.pem
+  ssl_certificate_chain: /etc/ssl/example-ssl.test/fullchain.pem
 ```
 A list of virtual hosts to create. `hostname` and `root` are required. HTTPS sites also require `ssl_certificate` and `ssl_certificate_key`. Optional properties are `alias` and `ssl_certificate_chain`.
 
