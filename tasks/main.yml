@@ -47,7 +47,7 @@
 - name: Enable additional Apache modules
   apache2_module:
     name: "{{ item.name }}"
-    state: "{{ item.state|default(present) }}"
+    state: "{{ item.state | default(present) }}"
   loop: "{{ apache_modules }}"
   notify: restart apache
 
