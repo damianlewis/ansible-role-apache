@@ -5,9 +5,9 @@ apache_ip_address: '*'
 apache_error_log_level: error
 apache_access_log_format: combined
 
-apache_vhost_options: "-Indexes +FollowSymLinks +MultiViews"
-apache_vhost_allow_override: "All"
-apache_vhost_require: "all granted"
+apache_vhost_options: '-Indexes +FollowSymLinks +MultiViews'
+apache_vhost_allow_override: 'All'
+apache_vhost_require: 'all granted'
 
 apache_ssl_cipher_suite: 'EECDH+AESGCM:EDH+AESGCM:AES256+EECDH:AES256+EDH'
 apache_ssl_protocol: 'All -SSLv2 -SSLv3 -TLSv1 -TLSv1.1'
