@@ -20,6 +20,18 @@
   set_fact:
     apache_version_patch: "{{ _apache_version.stdout.split('.')[2] }}"
 
+- name: Enable Apache headers module
+  apache2_module:
+    name: headers
+  notify: restart apache
+
+- name: Enable additional Apache modules
+  apache2_module:
+    name: "{{ item.name }}"
+    state: "{{ item.state | default('present') }}"
+  loop: "{{ apache_modules }}"
+  notify: restart apache
+
 - name: Add Apache virtual host for sites
   template:
     src: templates/vhost.conf.j2
@@ -37,18 +49,6 @@
   file:
     path: "/etc/apache2/sites-enabled/000-default.conf"
     state: absent
-  notify: restart apache
-
-- name: Enable Apache headers module
-  apache2_module:
-    name: headers
-  notify: restart apache
-
-- name: Enable additional Apache modules
-  apache2_module:
-    name: "{{ item.name }}"
-    state: "{{ item.state | default(present) }}"
-  loop: "{{ apache_modules }}"
   notify: restart apache
 
 - name: Ensure Apache is started and enabled on boot
