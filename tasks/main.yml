@@ -1,11 +1,10 @@
 ---
 - name: Install Apache
-  package:
+  apt:
     name: apache2
-    state: present
 
 - name: Get Apache version
-  shell: "apache2 -v | awk -F/ '/\\// {print $2}' | awk '{print $1}'"
+  shell: "dpkg -l | awk '$2 ~ /^apache2$/ {print $3}' | awk -F- '{print $1}'"
   register: _apache_version
 
 - name: Set Apache major version variable
@@ -45,7 +44,7 @@
     creates: "/etc/apache2/sites-enabled/{{ item.hostname }}.conf"
   loop: "{{ apache_vhosts }}"
 
-- name: Remove default virtual host
+- name: Disbale default virtual host
   file:
     path: "/etc/apache2/sites-enabled/000-default.conf"
     state: absent

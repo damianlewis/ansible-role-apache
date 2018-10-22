@@ -6,12 +6,6 @@ galaxy_info:
   min_ansible_version: 2.5
 
   platforms:
-  - name: Debian
-    versions:
-    - wheezy
-    - jessie
-    - stretch
-    - buster
   - name: Ubuntu
     versions:
     - trusty
