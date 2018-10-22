@@ -1,5 +1,5 @@
     <Directory {{ item.root }}>
-        Options {{ apache_vhost_options }}
-        AllowOverride {{ apache_vhost_allow_override }}
-        Require {{ apache_vhost_require }}
+        Options {{ apache_vhost_options | default('-Indexes +FollowSymLinks +MultiViews') }}
+        AllowOverride {{ apache_vhost_allow_override | default('All') }}
+        Require {{ apache_vhost_require | default('all granted') }}
     </Directory>
