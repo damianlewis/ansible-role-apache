@@ -41,7 +41,9 @@
   notify: restart apache
 
 - name: Disable sites
-  command: "a2dissite {{ item.hostname }}.conf"
+  file:
+    path: "{{ apache_sites_enabled_path }}/{{ item.hostname }}.conf"
+    state: absent
   when: item.state | default('present') == 'absent'
   loop: "{{ apache_sites }}"
   notify: restart apache
@@ -52,7 +54,6 @@
     state: absent
   when: item.state| default('present') == 'absent'
   loop: "{{ apache_sites }}"
-  notify: restart apache
 
 - name: Add sites
   template:
@@ -60,14 +61,15 @@
     dest: "{{ apache_sites_available_path }}/{{ item.hostname }}.conf"
   when: item.state | default('present') != 'absent'
   loop: "{{ apache_sites }}"
-  notify: restart apache
 
 - name: Enable sites
-  command: "a2ensite {{ item.hostname }}.conf"
-  args:
-    creates: "{{ apache_sites_enabled_path }}/{{ item.hostname }}.conf"
+  file:
+    src: "{{ apache_sites_available_path }}/{{ item.hostname }}.conf"
+    dest: "{{ apache_sites_enabled_path }}/{{ item.hostname }}.conf"
+    state: link
   when: item.state | default('present') != 'absent'
   loop: "{{ apache_sites }}"
+  notify: restart apache
 
 - name: Disbale default Apache sites
   file:
