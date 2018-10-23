@@ -20,14 +20,19 @@
     apache_version_patch: "{{ _apache_version.stdout.split('.')[2] }}"
 
 - name: Enable Apache headers module
+- name: Disable Apache modules
   apache2_module:
     name: headers
+    name: "{{ item.name }}"
+    state: absent
+  when: item.state | default('present') == 'absent'
+  loop: "{{ apache_modules }}"
   notify: restart apache
 
-- name: Enable additional Apache modules
+- name: Enable Apache modules
   apache2_module:
     name: "{{ item.name }}"
-    state: "{{ item.state | default('present') }}"
+  when: item.state | default('present') != 'absent'
   loop: "{{ apache_modules }}"
   notify: restart apache
 

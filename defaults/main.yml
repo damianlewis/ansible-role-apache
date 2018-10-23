@@ -30,9 +30,8 @@ apache_disable_ssl_compression: false
 apache_disable_ssl_session_tickets: false
 
 apache_modules: []
-# - name: rewrite
-#   state: present
 # - name: ssl
+# - name: rewrite
 #   state: absent
 
 apache_headers: []
