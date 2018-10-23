@@ -5,13 +5,9 @@
 {% else %}
 {% include 'server.j2' %}
 
-
-{% for header in apache_headers %}
-    Header always set {{ header }}
-{% endfor %}
+{% include 'headers.j2' %}
 
 {% include 'directory.j2' %}
-
 
 {% include 'log.j2' %}
 {% endif %}
@@ -21,16 +17,11 @@
 <VirtualHost {{ apache_ip_address | default('*') }}:{{ apache_https_port | default('443') }}>
 {% include 'server.j2' %}
 
-
 {% include 'ssl.j2' %}
 
-
-{% for header in apache_headers %}
-    Header always set {{ header }}
-{% endfor %}
+{% include 'headers.j2' %}
 
 {% include 'directory.j2' %}
-
 
 {% include 'log.j2' %}
 </VirtualHost>
