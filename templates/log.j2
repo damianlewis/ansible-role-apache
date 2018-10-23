@@ -1,7 +1,10 @@
+{% if apache_enable_error_log or apache_enable_access_log %}
+
 {% if apache_enable_error_log %}
     ErrorLog ${APACHE_LOG_DIR}/{{ item.hostname }}-error.log
     LogLevel {{ apache_error_log_level | default('error') }}
 {% endif %}
 {% if apache_enable_access_log %}
     CustomLog ${APACHE_LOG_DIR}/{{ item.hostname }}-access.log {{ apache_access_log_format | default('combined') }}
+{% endif %}
 {% endif %}

@@ -4,11 +4,8 @@
     Redirect permanent / https://{{ item.hostname }}
 {% else %}
 {% include 'server.j2' %}
-
 {% include 'headers.j2' %}
-
 {% include 'directory.j2' %}
-
 {% include 'log.j2' %}
 {% endif %}
 </VirtualHost>
@@ -16,13 +13,9 @@
 {% if item.ssl_certificate is defined and item.ssl_certificate_key is defined %}
 <VirtualHost {{ apache_ip_address | default('*') }}:{{ apache_https_port | default('443') }}>
 {% include 'server.j2' %}
-
 {% include 'ssl.j2' %}
-
 {% include 'headers.j2' %}
-
 {% include 'directory.j2' %}
-
 {% include 'log.j2' %}
 </VirtualHost>
 {% if apache_enable_ssl_stapling %}

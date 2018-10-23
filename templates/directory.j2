@@ -1,5 +1,8 @@
+{% if item.root is defined %}
+
     <Directory {{ item.root }}>
         Options {{ apache_vhost_options | default('-Indexes +FollowSymLinks +MultiViews') }}
         AllowOverride {{ apache_vhost_allow_override | default('All') }}
         Require {{ apache_vhost_require | default('all granted') }}
     </Directory>
+{% endif %}
