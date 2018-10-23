@@ -107,7 +107,7 @@ apache_sites:
   ssl_certificate_key: /etc/ssl/private/example-ssl.test.key
   ssl_certificate_chain: /etc/ssl/example-ssl.test/fullchain.pem
 ```
-An example configuration for both a HTTP and HTTPS site. The default state of a site is `present`, use `absent` to disable a site.
+An example configuration for both a HTTP and HTTPS site. The default state of a site is `present`, use `absent` to disable/remove a site.
 
 ## Dependencies
 None.
