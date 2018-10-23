@@ -69,10 +69,11 @@
   when: item.state | default('present') != 'absent'
   loop: "{{ apache_sites }}"
 
-- name: Disbale default virtual host
+- name: Disbale default Apache sites
   file:
-    path: "/etc/apache2/sites-enabled/000-default.conf"
+    path: "{{ apache_default_site_path }}"
     state: absent
+  when: apache_disable_default_site
   notify: restart apache
 
 - name: Ensure Apache is started and enabled on boot

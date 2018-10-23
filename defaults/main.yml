@@ -20,6 +20,7 @@ apache_default_site_path: /etc/apache2/sites-enabled/000-default.conf
 
 apache_enable_error_log: false
 apache_enable_access_log: false
+apache_disable_default_site: true
 apache_enable_http_to_https_redirect: false
 apache_enable_ssl_cipher_suite: false
 apache_enable_ssl_protocol: false
