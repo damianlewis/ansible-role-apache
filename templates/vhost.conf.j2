@@ -1,5 +1,5 @@
 <VirtualHost {{ apache_ip_address | default('*') }}:{{ apache_http_port | default('80') }}>
-{% if apache_enable_http_to_https_redirect %}
+{% if apache_enable_http_to_https_redirect and item.ssl_certificate is defined and item.ssl_certificate_key is defined %}
     ServerName {{ item.hostname }}
     Redirect permanent / https://{{ item.hostname }}
 {% else %}
