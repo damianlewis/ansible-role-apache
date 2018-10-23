@@ -34,24 +34,40 @@
   loop: "{{ apache_modules }}"
   notify: restart apache
 
-- name: Add Apache virtual host for sites
 - name: Ensure Apache headers module is enabled
   apache2_module:
     name: headers
   when: apache_enable_ssl_hsts or (apache_headers | length > 0)
   notify: restart apache
 
+- name: Disable sites
+  command: "a2dissite {{ item.hostname }}.conf"
+  when: item.state | default('present') == 'absent'
+  loop: "{{ apache_sites }}"
+  notify: restart apache
+
+- name: Remove sites
+  file:
+    path: "{{ apache_sites_available_path }}/{{ item.hostname }}.conf"
+    state: absent
+  when: item.state| default('present') == 'absent'
+  loop: "{{ apache_sites }}"
+  notify: restart apache
+
+- name: Add sites
   template:
     src: templates/vhost.conf.j2
-    dest: "/etc/apache2/sites-available/{{ item.hostname }}.conf"
-  loop: "{{ apache_vhosts }}"
+    dest: "{{ apache_sites_available_path }}/{{ item.hostname }}.conf"
+  when: item.state | default('present') != 'absent'
+  loop: "{{ apache_sites }}"
   notify: restart apache
 
 - name: Enable sites
   command: "a2ensite {{ item.hostname }}.conf"
   args:
-    creates: "/etc/apache2/sites-enabled/{{ item.hostname }}.conf"
-  loop: "{{ apache_vhosts }}"
+    creates: "{{ apache_sites_enabled_path }}/{{ item.hostname }}.conf"
+  when: item.state | default('present') != 'absent'
+  loop: "{{ apache_sites }}"
 
 - name: Disbale default virtual host
   file:

@@ -1,4 +1,8 @@
 ---
+apache_sites_available_path: /etc/apache2/sites-available
+apache_sites_enabled_path: /etc/apache2/sites-enabled
+apache_default_site_path: /etc/apache2/sites-enabled/000-default.conf
+
 # apache_http_port: ''
 # apache_https_port: ''
 # apache_ip_address: ''
@@ -38,10 +42,11 @@ apache_headers: []
 # - 'X-Frame-Options DENY'
 # - 'X-Content-Type-Options nosniff'
 
-apache_vhosts: []
+apache_sites: []
 # - hostname: example.test
 #   alias: example
 #   root: /var/www/html
+#   state: absent
 # - hostname: example-ssl.test
 #   root: /var/www/html
 #   ssl_certificate: /etc/ssl/example-ssl.test/certificate.crt
