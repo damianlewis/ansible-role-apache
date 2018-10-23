@@ -1,5 +1,5 @@
 # Ansible Role: Apache
-Installs and configures Apache.
+Installs and configures Apache sites.
 
 ## Requirements
 None.
@@ -55,7 +55,7 @@ apache_disable_ssl_compression: false
 # Requires Apache >= 2.4.11
 apache_disable_ssl_session_tickets: false
 ```
-Configure the Apache virtual host file by enabling/disabling these settings. The Apache `SSLCompression` directive requires version 2.4.3 and the directive `SSLSessionTickets` requires version 2.4.11.
+Configure the Apache virtual host file by enabling/disabling these settings.
 
 ```yaml
 apache_modules: []

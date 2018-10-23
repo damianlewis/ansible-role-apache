@@ -1,6 +1,6 @@
 galaxy_info:
   author: Damian Lewis
-  description: Installs and configures Apache
+  description: Installs and configures Apache sites
   license: BSD
 
   min_ansible_version: 2.5
