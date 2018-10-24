@@ -3,6 +3,8 @@ apache_sites_available_path: /etc/apache2/sites-available
 apache_sites_enabled_path: /etc/apache2/sites-enabled
 apache_default_site_path: /etc/apache2/sites-enabled/000-default.conf
 
+apache_ppa_use: false
+
 # apache_http_port: ''
 # apache_https_port: ''
 # apache_ip_address: ''

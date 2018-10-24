@@ -1,4 +1,9 @@
 ---
+- name: Add PPA repository for Apache
+  apt_repository:
+    repo: ppa:ondrej/apache2
+  when: apache_ppa_use
+
 - name: Install Apache
   apt:
     name: apache2

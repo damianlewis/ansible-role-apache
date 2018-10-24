@@ -15,6 +15,11 @@ apache_default_site_path: /etc/apache2/sites-enabled/000-default.conf
 The default paths and site used by Apache.
 
 ```yaml
+apache_ppa_use: false
+```
+Use the ondrej/apache2 PPA repository to install Apache.
+
+```yaml
 apache_http_port: 80
 apache_https_port: 443
 ```
