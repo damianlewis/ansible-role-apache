@@ -9,10 +9,6 @@ apache_default_site_path: /etc/apache2/sites-enabled/000-default.conf
 # apache_error_log_level: ''
 # apache_access_log_format: ''
 
-# apache_vhost_options: ''
-# apache_vhost_allow_override: ''
-# apache_vhost_require: ''
-
 # apache_ssl_cipher_suite: ''
 # apache_ssl_protocol: ''
 # apache_ssl_stapling_cache: ''
@@ -53,3 +49,9 @@ apache_sites: []
 #   ssl_certificate: /etc/ssl/example-ssl.test/certificate.crt
 #   ssl_certificate_key: /etc/ssl/private/example-ssl.test.key
 #   ssl_certificate_chain: /etc/ssl/example-ssl.test/fullchain.pem
+#   directory:
+#   - rule: '"/var/www/html"'
+#     block:
+#     - 'Options -Indexes +FollowSymLinks +MultiViews'
+#     - 'AllowOverride All'
+#     - 'Require all granted'

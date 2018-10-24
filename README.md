@@ -32,13 +32,6 @@ apache_access_log_format: combined
 The error and access log settings.
 
 ```yaml
-apache_vhost_options: '-Indexes +FollowSymLinks +MultiViews'
-apache_vhost_allow_override: All
-apache_vhost_require: all granted
-```
-The virtual host directory settings.
-
-```yaml
 apache_ssl_cipher_suite: 'EECDH+AESGCM:EDH+AESGCM:AES256+EECDH:AES256+EDH'
 apache_ssl_protocol: 'All -SSLv2 -SSLv3 -TLSv1 -TLSv1.1'
 apache_ssl_stapling_cache: 'shmcb:logs/stapling-cache(150000)'
@@ -97,17 +90,35 @@ A list of sites to create. `hostname` and `root` properties are required, `alias
 
 ```yaml
 apache_sites:
-- hostname: example.test
-  alias: example
-  root: /var/www/html
-  state: absent
-- hostname: example-ssl.test
-  root: /var/www/html
-  ssl_certificate: /etc/ssl/example-ssl.test/certificate.crt
-  ssl_certificate_key: /etc/ssl/private/example-ssl.test.key
-  ssl_certificate_chain: /etc/ssl/example-ssl.test/fullchain.pem
+- hostname: ''
+  root: ''
+  state: present
 ```
-An example configuration for both a HTTP and HTTPS site. The default state of a site is `present`, use `absent` to disable/remove a site.
+Default values used for site configurations. The default state of a site is `present`, use `absent` to disable/remove a site.
+
+```yaml
+apache_sites:
+- hostname: example1.test
+  alias: example1
+  root: /var/www/html/example1
+  directory:
+  - rule: '"/var/www/html/example1"'
+    block:
+    - 'Options -Indexes +FollowSymLinks +MultiViews'
+    - 'AllowOverride All'
+    - 'Require all granted'
+- hostname: example2.test
+  alias: example2
+  root: /var/www/html/example2
+  ssl_certificate: /etc/ssl/example2.test/certificate.crt
+  ssl_certificate_key: /etc/ssl/private/example2.test.key
+  ssl_certificate_chain: /etc/ssl/example2.test/fullchain.pem
+  directory:
+  - rule: '"/var/www/html/example2"'
+    block:
+    - 'Options -Indexes +FollowSymLinks +MultiViews'
+    - 'AllowOverride All'
+    - 'Require all granted'
 
 ## Dependencies
 None.
