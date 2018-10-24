@@ -6,6 +6,7 @@
 {% include 'server.j2' %}
 {% include 'headers.j2' %}
 {% include 'directory.j2' %}
+{% include 'filesmatch.j2' %}
 {% include 'log.j2' %}
 {% endif %}
 </VirtualHost>
@@ -16,6 +17,7 @@
 {% include 'ssl.j2' %}
 {% include 'headers.j2' %}
 {% include 'directory.j2' %}
+{% include 'filesmatch.j2' %}
 {% include 'log.j2' %}
 </VirtualHost>
 {% if apache_enable_ssl_stapling %}

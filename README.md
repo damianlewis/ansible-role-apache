@@ -107,6 +107,10 @@ apache_sites:
     - 'Options -Indexes +FollowSymLinks +MultiViews'
     - 'AllowOverride All'
     - 'Require all granted'
+  filesmatch:
+  - rule: '".+\.ph(p[3457]?|t|tml)$"'
+    block:
+    - 'SetHandler proxy:unix:/run/php/php5.6-fpm.sock|fcgi://localhost'
 - hostname: example2.test
   alias: example2
   root: /var/www/html/example2
@@ -119,6 +123,14 @@ apache_sites:
     - 'Options -Indexes +FollowSymLinks +MultiViews'
     - 'AllowOverride All'
     - 'Require all granted'
+  filesmatch:
+  - rule: '".+\.ph(ar|p|tml)$"'
+    block:
+    - 'SetHandler proxy:unix:/run/php/php7.2-fpm.sock|fcgi://localhost'
+```
+An example configuration for both a HTTP and HTTPS site. Both these examples show how to use different versions of PHP and make use of unix socket connections for PHP-FPM.
+
+Note: These examples assume you have PHP-FPM installed and Apache configured to use the proxy and proxy_fcgi modules. Consider using the (damianlewis.apache-php-fpm)[https://github.com/damianlewis/ansible-role-apache-php-fpm] ansible role.
 
 ## Dependencies
 None.

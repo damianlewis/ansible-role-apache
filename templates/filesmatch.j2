@@ -1,0 +1,12 @@
+{% if item.filesmatch is defined and (item.filesmatch | length > 0) %}
+{% for filesmatch in item.filesmatch %}
+
+    <FilesMatch {{ filesmatch.rule }}>
+{% if filesmatch.block is defined and (filesmatch.block | length > 0) %}
+{% for line in filesmatch.block %}
+        {{ line }}
+{% endfor %}
+{% endif %}
+    </FilesMatch>
+{% endfor %}
+{% endif %}

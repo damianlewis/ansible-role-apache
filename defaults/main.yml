@@ -55,3 +55,7 @@ apache_sites: []
 #     - 'Options -Indexes +FollowSymLinks +MultiViews'
 #     - 'AllowOverride All'
 #     - 'Require all granted'
+#   filesmatch:
+#   - rule: '".+\.ph(p[3457]?|t|tml)$"'
+#     block:
+#     - 'SetHandler proxy:unix:/run/php/php7.2-fpm.sock|fcgi://localhost'
