@@ -130,7 +130,7 @@ apache_sites:
 ```
 An example configuration for both a HTTP and HTTPS site. Both these examples show how to use different versions of PHP and make use of unix socket connections for PHP-FPM.
 
-Note: These examples assume you have PHP-FPM installed and Apache configured to use the proxy and proxy_fcgi modules. Consider using the [damianlewis.apache-php-fpm](https://github.com/damianlewis/ansible-role-apache-php-fpm) ansible role.
+Note: These examples assume you have PHP-FPM installed and Apache configured to use the proxy and proxy_fcgi modules. Consider using the [Apache PHP-FPM](https://github.com/damianlewis/ansible-role-apache-php-fpm) ansible role.
 
 ## Dependencies
 None.
