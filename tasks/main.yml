@@ -46,7 +46,7 @@
     state: absent
   when: item.state | default('present') == 'absent'
   loop: "{{ apache_sites }}"
-  notify: restart apache
+  notify: reload apache
 
 - name: Remove sites
   file:
@@ -61,6 +61,7 @@
     dest: "{{ apache_sites_available_path }}/{{ item.hostname }}.conf"
   when: item.state | default('present') != 'absent'
   loop: "{{ apache_sites }}"
+  notify: reload apache
 
 - name: Enable sites
   file:
@@ -69,14 +70,14 @@
     state: link
   when: item.state | default('present') != 'absent'
   loop: "{{ apache_sites }}"
-  notify: restart apache
+  notify: reload apache
 
 - name: Disbale default Apache sites
   file:
     path: "{{ apache_default_site_path }}"
     state: absent
   when: apache_disable_default_site
-  notify: restart apache
+  notify: reload apache
 
 - name: Ensure Apache is started and enabled on boot
   service:
