@@ -1,4 +1,5 @@
 galaxy_info:
+  role_name: Apache
   author: Damian Lewis
   description: Installs and configures Apache sites
   license: BSD
