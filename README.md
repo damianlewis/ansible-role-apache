@@ -110,9 +110,9 @@ apache_sites:
 - hostname: example.com
   root: /var/www/html
   headers:
-  - 'X-Frame-Options deny always'
-  - 'X-Content-Type-Options nosniff always'
-  - 'X-XSS-Protection "1; mode=block" always'
+  - 'X-Frame-Options "DENY"'
+  - 'X-Content-Type-Options "nosniff"'
+  - 'X-XSS-Protection "1; mode=block"'
 ```
 Use the `headers` attribute to add server response headers.
 
@@ -173,7 +173,7 @@ apache_sites:
     SSLCompression off
     SSLSessionTickets off
   https_headers:
-  - 'Strict-Transport-Security "max-age=63072000; includeSubDomains; preload" always'
+  - 'Strict-Transport-Security "max-age=63072000; includeSubDomains; preload"'
 ```
 Additional SSL directives and headers can be added using the `https_server_directives` and `https_headers` attribute.
 
