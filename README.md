@@ -46,10 +46,10 @@ apache_pid_file: logs/apache.pid
 The default `pid` directive setting is `/var/run/apache2/apache2.pid`. Use the `apache_pid_file` variable to override this.
 
 ```yaml
-apache_run_dir: /var/run/apache2
-apache_lock_dir: /var/lock/apache2
+apache_run_path: /var/run/apache2
+apache_lock_path: /var/lock/apache2
 ```
-Use the `apache_run_dir` and `apache_lock_dir` variables to override the default values use for the temporary state file locations. The default for `apache_run_dir` is `/var/run/apache2` and the default for `apache_lock_dir` is `/var/lock/apache2`.
+Use the `apache_run_path` and `apache_lock_path` variables to override the default values use for the temporary state file locations. The default for `apache_run_path` is `/var/run/apache2` and the default for `apache_lock_path` is `/var/lock/apache2`.
 
 ```yaml
 apache_http_port: '8080'

@@ -8,8 +8,8 @@ apache_required_modules:
 - name: ssl
 
 __apache_pid_file: /var/run/apache2/apache2.pid
-__apache_run_dir: /var/run/apache2
-__apache_lock_dir: /var/lock/apache2
+__apache_run_path: /var/run/apache2
+__apache_lock_path: /var/lock/apache2
 __apache_log_path: /var/log/apache2
 
 __apache_user: www-data

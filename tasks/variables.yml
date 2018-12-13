@@ -4,15 +4,15 @@
     apache_pid_file: "{{ __apache_pid_file }}"
   when: apache_pid_file is not defined
 
-- name: Define apache_run_dir
+- name: Define apache_run_path
   set_fact:
-    apache_run_dir: "{{ __apache_run_dir }}"
-  when: apache_run_dir is not defined
+    apache_run_path: "{{ __apache_run_path }}"
+  when: apache_run_path is not defined
 
-- name: Define apache_lock_dir
+- name: Define apache_lock_path
   set_fact:
-    apache_lock_dir: "{{ __apache_lock_dir }}"
-  when: apache_lock_dir is not defined
+    apache_lock_path: "{{ __apache_lock_path }}"
+  when: apache_lock_path is not defined
 
 - name: Define apache_log_path
   set_fact:
