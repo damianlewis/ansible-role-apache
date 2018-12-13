@@ -1,7 +1,7 @@
 galaxy_info:
   role_name: Apache
   author: Damian Lewis
-  description: Installs and configures Apache sites
+  description: Installs and configures Apache
   license: BSD
 
   min_ansible_version: 2.5

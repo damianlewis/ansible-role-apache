@@ -1,5 +1,5 @@
 # Ansible Role: Apache
-Installs and configures Apache sites.
+Installs and configures Apache.
 
 ## Requirements
 None.
