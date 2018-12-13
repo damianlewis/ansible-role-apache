@@ -2,10 +2,12 @@
 - name: Get Apache version
   shell: "dpkg -l | awk '$2 ~ /^apache2$/ {print $3}' | awk -F- '{print $1}'"
   register: _apache_version
+  when: apache_version is not defined
 
 - name: Define apache_version
   set_fact:
     apache_version: "{{ _apache_version.stdout.split('.')[0] }}.{{ _apache_version.stdout.split('.')[1] }}"
+  when: apache_version is not defined
 
 - name: Copy Apache envvars file
   template:
