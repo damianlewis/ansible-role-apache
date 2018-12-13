@@ -1,0 +1,44 @@
+---
+- name: Get Apache version
+  shell: "dpkg -l | awk '$2 ~ /^apache2$/ {print $3}' | awk -F- '{print $1}'"
+  register: _apache_version
+
+- name: Define apache_version
+  set_fact:
+    apache_version: "{{ _apache_version.stdout.split('.')[0] }}.{{ _apache_version.stdout.split('.')[1] }}"
+
+- name: Copy Apache envvars file
+  template:
+    src: templates/envvars.conf.j2
+    dest: "{{ apache_path }}/envvars.conf"
+    owner: root
+    group: root
+    mode: 0644
+  notify: reload apache
+
+- name: Copy Apache configuration file
+  template:
+    src: templates/apache{{ apache_version }}.conf.j2
+    dest: "{{ apache_path }}/apache2.conf"
+    owner: root
+    group: root
+    mode: 0644
+  notify: reload apache
+
+- name: Copy Apache ports file
+  template:
+    src: templates/ports{{ apache_version }}.conf.j2
+    dest: "{{ apache_path }}/ports.conf"
+    owner: root
+    group: root
+    mode: 0644
+  notify: reload apache
+
+- name: Enable/Disable Apache modules
+  apache2_module:
+    name: "{{ item.name }}"
+    state: "{{ item.state | default('present') }}"
+  loop:
+  - "{{ apache_required_modules }}"
+  - "{{ apache_modules }}"
+  notify: restart apache

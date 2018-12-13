@@ -1,6 +1,0 @@
-{% if apache_headers | length > 0 %}
-
-{% for header in apache_headers %}
-    Header always set {{ header }}
-{% endfor %}
-{% endif %}

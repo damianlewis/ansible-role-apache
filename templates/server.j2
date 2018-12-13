@@ -1,7 +1,0 @@
-{% if item.hostname is defined and item.root is defined %}
-    ServerName {{ item.hostname }}
-{% if item.server_alias is defined %}
-    ServerAlias {{ item.alias }}
-{% endif %}
-    DocumentRoot {{ item.root }}
-{% endif %}

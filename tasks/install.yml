@@ -1,0 +1,23 @@
+---
+- name: Check if Apache is already installed
+  stat:
+    path: /etc/init.d/apache2
+  register: apache_installed
+
+- name: Add PPA repository for Apache
+  apt_repository:
+    repo: ppa:ondrej/apache2
+  when:
+  - apache_use_ppa
+  - not apache_installed.stat.exists
+
+- name: Update apt cache
+  apt:
+    update_cache: yes
+    cache_valid_time: 3600
+  when: not apache_use_ppa
+
+- name: Install Apache
+  apt:
+    name: apache2
+  when: not apache_installed.stat.exists

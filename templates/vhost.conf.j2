@@ -1,27 +1,119 @@
-<VirtualHost {{ apache_ip_address | default('*') }}:{{ apache_http_port | default('80') }}>
-{% if apache_enable_http_to_https_redirect and item.ssl_certificate is defined and item.ssl_certificate_key is defined %}
-    ServerName {{ item.hostname }}
-    Redirect permanent / https://{{ item.hostname }}
+<VirtualHost {{ item.ip_address | default('*') }}:{{ item.http_port | default(apache_http_port) }}>
+{% if item.enable_http_to_https_redirect | default(false) %}
+
+  ServerName {{ item.hostname }}
+{% if item.server_alias is defined %}
+  ServerAlias {{ item.alias }}
+{% endif %}
+  Redirect permanent / https://{{ item.hostname }}
+
 {% else %}
-{% include 'server.j2' %}
-{% include 'headers.j2' %}
-{% include 'directory.j2' %}
-{% include 'filesmatch.j2' %}
-{% include 'log.j2' %}
+
+  ServerName {{ item.hostname }}
+{% if item.server_alias is defined %}
+  ServerAlias {{ item.alias }}
+{% endif %}
+  DocumentRoot {{ item.root }}
+
+{% if item.virtualhost_directives is defined %}
+  {{ item.virtualhost_directives | indent(2) }}
+{% endif %}
+
+  <ifModule mod_headers.c>
+{% for header in item.headers | default([]) %}
+    Header set {{ header }}
+{% endfor %}
+  </IfModule>
+
+{% for directory in item.directories | default([]) %}
+  <Directory {{ directory.rule }}>
+{% if directory.block is defined %}
+    {{ directory.block | indent(4) }}
+{%- endif %}
+  </Directory>
+{% endfor %}
+
+{% for filesmatch in item.filesmatches | default([]) %}
+  <FilesMatch {{ filesmatch.rule }}>
+{% if filesmatch.block is defined  %}
+    {{ filesmatch.block | indent(4) }}
+{%- endif %}
+  </FilesMatch>
+{% endfor %}
+
+{% if item.enable_error_log is defined %}
+  ErrorLog ${APACHE_LOG_DIR}/{{ item.hostname }}-error.log
+  LogLevel {{ item.error_log_level | default('error') }}
+{% endif -%}
+
+{% if item.enable_access_log is defined %}
+  CustomLog ${APACHE_LOG_DIR}/{{ item.hostname }}-access.log {{ item.access_log_format | default('combined') }}
+{% endif -%}
+
 {% endif %}
 </VirtualHost>
 
 {% if item.ssl_certificate is defined and item.ssl_certificate_key is defined %}
-<VirtualHost {{ apache_ip_address | default('*') }}:{{ apache_https_port | default('443') }}>
-{% include 'server.j2' %}
-{% include 'ssl.j2' %}
-{% include 'headers.j2' %}
-{% include 'directory.j2' %}
-{% include 'filesmatch.j2' %}
-{% include 'log.j2' %}
-</VirtualHost>
-{% if apache_enable_ssl_stapling %}
-
-SSLStaplingCache "{{ apache_ssl_stapling_cache | default('shmcb:logs/stapling-cache(150000)') }}"
+<ifModule mod_ssl.c>
+  <VirtualHost {{ item.ip_address | default('*') }}:{{ item.https_port | default(apache_https_port) }}>
+    ServerName {{ item.hostname }}
+{% if item.server_alias is defined %}
+    ServerAlias {{ item.alias }}
 {% endif %}
+    DocumentRoot {{ item.root }}
+
+{% if item.virtualhost_directives is defined %}
+    {{ item.virtualhost_directives | indent(4) }}
+{% endif %}
+
+    SSLEngine on
+    SSLCertificateFile {{ item.ssl_certificate }}
+    SSLCertificateKeyFile {{ item.ssl_certificate_key }}
+{% if item.ssl_certificate_chain is defined %}
+    SSLCertificateChainFile {{ item.ssl_certificate_chain }}
+{% endif %}
+
+{% if item.https_virtualhost_directives is defined %}
+    {{ item.https_virtualhost_directives | indent(4) }}
+{% endif %}
+
+    <ifModule mod_headers.c>
+{% for header in item.headers | default([]) %}
+      Header set {{ header }}
+{% endfor %}
+{% for header in item.https_headers | default([]) %}
+      Header set {{ header }}
+{% endfor %}
+    </IfModule>
+
+{% for directory in item.directories | default([]) %}
+    <Directory {{ directory.rule }}>
+{% if directory.block is defined %}
+      {{ directory.block | indent(6) }}
+{%- endif %}
+    </Directory>
+{% endfor %}
+
+{% for filesmatch in item.filesmatches | default([]) %}
+    <FilesMatch {{ filesmatch.rule }}>
+{% if filesmatch.block is defined  %}
+      {{ filesmatch.block | indent(6) }}
+{%- endif %}
+    </FilesMatch>
+{% endfor %}
+
+{% if item.enable_error_log is defined %}
+    ErrorLog ${APACHE_LOG_DIR}/{{ item.hostname }}-error.log
+    LogLevel {{ item.error_log_level | default('error') }}
+{% endif -%}
+
+{% if item.enable_access_log is defined %}
+    CustomLog ${APACHE_LOG_DIR}/{{ item.hostname }}-access.log {{ item.access_log_format | default('combined') }}
+{% endif %}
+  </VirtualHost>
+</IfModule>
+{% endif %}
+
+{% if item.server_directives is defined %}
+{{ item.server_directives }}
 {% endif %}

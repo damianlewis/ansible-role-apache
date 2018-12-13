@@ -1,88 +1,15 @@
 ---
-- name: Add PPA repository for Apache
-  apt_repository:
-    repo: ppa:ondrej/apache2
-  when: apache_ppa_use
+# Variable configuration.
+- include_tasks: variables.yml
 
-- name: Install Apache
-  apt:
-    name: apache2
+# Install Apache.
+- include_tasks: install.yml
 
-- name: Get Apache version
-  shell: "dpkg -l | awk '$2 ~ /^apache2$/ {print $3}' | awk -F- '{print $1}'"
-  register: _apache_version
+# Configure Apache.
+- include_tasks: configure.yml
 
-- name: Set Apache major version variable
-  set_fact:
-    apache_version_major: "{{ _apache_version.stdout.split('.')[0] }}"
-
-- name: Set Apache minor version variable
-  set_fact:
-    apache_version_minor: "{{ _apache_version.stdout.split('.')[1] }}"
-
-- name: Set Apache patch version variable
-  set_fact:
-    apache_version_patch: "{{ _apache_version.stdout.split('.')[2] }}"
-
-- name: Disable Apache modules
-  apache2_module:
-    name: "{{ item.name }}"
-    state: absent
-  when: item.state | default('present') == 'absent'
-  loop: "{{ apache_modules }}"
-  notify: restart apache
-
-- name: Enable Apache modules
-  apache2_module:
-    name: "{{ item.name }}"
-  when: item.state | default('present') != 'absent'
-  loop: "{{ apache_modules }}"
-  notify: restart apache
-
-- name: Ensure Apache headers module is enabled
-  apache2_module:
-    name: headers
-  when: apache_enable_ssl_hsts or (apache_headers | length > 0)
-  notify: restart apache
-
-- name: Disable sites
-  file:
-    path: "{{ apache_sites_enabled_path }}/{{ item.hostname }}.conf"
-    state: absent
-  when: item.state | default('present') == 'absent'
-  loop: "{{ apache_sites }}"
-  notify: reload apache
-
-- name: Remove sites
-  file:
-    path: "{{ apache_sites_available_path }}/{{ item.hostname }}.conf"
-    state: absent
-  when: item.state| default('present') == 'absent'
-  loop: "{{ apache_sites }}"
-
-- name: Add sites
-  template:
-    src: templates/vhost.conf.j2
-    dest: "{{ apache_sites_available_path }}/{{ item.hostname }}.conf"
-  when: item.state | default('present') != 'absent'
-  loop: "{{ apache_sites }}"
-  notify: reload apache
-
-- name: Enable sites
-  file:
-    src: "{{ apache_sites_available_path }}/{{ item.hostname }}.conf"
-    dest: "{{ apache_sites_enabled_path }}/{{ item.hostname }}.conf"
-    state: link
-  when: item.state | default('present') != 'absent'
-  loop: "{{ apache_sites }}"
-  notify: reload apache
-
-- name: Disbale default Apache sites
-  file:
-    path: "{{ apache_default_site_path }}"
-    state: absent
-  when: apache_disable_default_site
-  notify: reload apache
+# Add/Remove sites.
+- include_tasks: add-remove-sites.yml
 
 - name: Ensure Apache is started and enabled on boot
   service:

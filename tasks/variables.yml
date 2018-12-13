@@ -1,0 +1,35 @@
+---
+- name: Define apache_pid_file
+  set_fact:
+    apache_pid_file: "{{ __apache_pid_file }}"
+  when: apache_pid_file is not defined
+
+- name: Define apache_run_dir
+  set_fact:
+    apache_run_dir: "{{ __apache_run_dir }}"
+  when: apache_run_dir is not defined
+
+- name: Define apache_lock_dir
+  set_fact:
+    apache_lock_dir: "{{ __apache_lock_dir }}"
+  when: apache_lock_dir is not defined
+
+- name: Define apache_log_path
+  set_fact:
+    apache_log_path: "{{ __apache_log_path }}"
+  when: apache_log_path is not defined
+
+- name: Define apache_http_port
+  set_fact:
+    apache_http_port: "{{ __apache_http_port }}"
+  when: apache_http_port is not defined
+
+- name: Define apache_https_port
+  set_fact:
+    apache_https_port: "{{ __apache_https_port }}"
+  when: apache_https_port is not defined
+
+- name: Define apache_group
+  set_fact:
+    apache_group: "{{ __apache_group }}"
+  when: apache_group is not defined

@@ -1,0 +1,56 @@
+---
+- name: Disable sites
+  file:
+    path: "{{ apache_sites_enabled_path }}/{{ item.hostname }}.conf"
+    state: absent
+  when: item.state | default('present') == 'absent'
+  loop: "{{ apache_sites }}"
+  notify: reload apache
+
+- name: Remove sites
+  file:
+    path: "{{ apache_sites_available_path }}/{{ item.hostname }}.conf"
+    state: absent
+  when: item.state| default('present') == 'absent'
+  loop: "{{ apache_sites }}"
+
+- name: Add sites
+  template:
+    src: templates/vhost.conf.j2
+    dest: "{{ apache_sites_available_path }}/{{ item.hostname }}.conf"
+    owner: root
+    group: root
+    mode: 0644
+  when: item.state | default('present') != 'absent'
+  loop: "{{ apache_sites }}"
+  notify: reload apache
+
+- name: Enable sites
+  file:
+    src: "{{ apache_sites_available_path }}/{{ item.hostname }}.conf"
+    dest: "{{ apache_sites_enabled_path }}/{{ item.hostname }}.conf"
+    owner: root
+    group: root
+    mode: 0644
+    state: link
+  when: item.state | default('present') != 'absent'
+  loop: "{{ apache_sites }}"
+  notify: reload apache
+
+- name: Disbale default Apache 2.2 site
+  file:
+    path: "{{ apache_sites_enabled_path }}/000-default"
+    state: absent
+  when:
+  - apache_disable_default_site
+  - apache_version == '2.2'
+  notify: reload apache
+
+  - name: Disbale default Apache 2.4 site
+    file:
+      path: "{{ apache_sites_enabled_path }}/000-default.conf"
+      state: absent
+    when:
+    - apache_disable_default_site
+    - apache_version == '2.4'
+    notify: reload apache

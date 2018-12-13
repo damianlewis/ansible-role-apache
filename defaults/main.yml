@@ -1,59 +1,11 @@
 ---
-apache_ppa_use: false
+apache_use_ppa: false
 
-# apache_http_port: ''
-# apache_https_port: ''
-# apache_ip_address: ''
-# apache_error_log_level: ''
-# apache_access_log_format: ''
+apache_allow_additional_confs: true
+apache_disable_default_site: false
 
-# apache_ssl_cipher_suite: ''
-# apache_ssl_protocol: ''
-# apache_ssl_stapling_cache: ''
-# apache_ssl_hsts: ''
-
-apache_enable_error_log: false
-apache_enable_access_log: false
-apache_disable_default_site: true
-apache_enable_http_to_https_redirect: false
-apache_enable_ssl_cipher_suite: false
-apache_enable_ssl_protocol: false
-apache_enable_ssl_cipher_order: false
-apache_enable_ssl_stapling: false
-apache_enable_ssl_hsts: false
-
-# Requires Apache >= 2.4.3
-apache_disable_ssl_compression: false
-
-# Requires Apache >= 2.4.11
-apache_disable_ssl_session_tickets: false
-
+# Apache modules
 apache_modules: []
-# - name: ssl
-# - name: rewrite
-#   state: absent
 
-apache_headers: []
-# - 'X-Frame-Options DENY'
-# - 'X-Content-Type-Options nosniff'
-
+# Apache sites
 apache_sites: []
-# - hostname: example.test
-#   alias: example
-#   root: /var/www/html
-#   state: absent
-# - hostname: example-ssl.test
-#   root: /var/www/html
-#   ssl_certificate: /etc/ssl/example-ssl.test/certificate.crt
-#   ssl_certificate_key: /etc/ssl/private/example-ssl.test.key
-#   ssl_certificate_chain: /etc/ssl/example-ssl.test/fullchain.pem
-#   directory:
-#   - rule: '"/var/www/html"'
-#     block:
-#     - 'Options -Indexes +FollowSymLinks +MultiViews'
-#     - 'AllowOverride All'
-#     - 'Require all granted'
-#   filesmatch:
-#   - rule: '".+\.ph(p[3457]?|t|tml)$"'
-#     block:
-#     - 'SetHandler proxy:unix:/run/php/php7.2-fpm.sock|fcgi://localhost'
