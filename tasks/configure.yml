@@ -9,7 +9,7 @@
 
 - name: Copy Apache envvars file
   template:
-    src: templates/envvars.conf.j2
+    src: templates/envvars.j2
     dest: "{{ apache_path }}/envvars.conf"
     owner: root
     group: root
