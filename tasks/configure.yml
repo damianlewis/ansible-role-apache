@@ -40,5 +40,5 @@
   apache2_module:
     name: "{{ item.name }}"
     state: "{{ item.state | default('present') }}"
-  loop: "{{ apache_required_modules }} + {{ apache_modules }}"
+  loop: "{{ apache_modules }}"
   notify: restart apache

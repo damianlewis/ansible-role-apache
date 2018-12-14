@@ -64,6 +64,7 @@ By default, Apache will include any configuration files found in either the `con
 
 ```yaml
 apache_modules:
+  - name: headers
   - name: rewrite
   - name: ssl
     state: absent

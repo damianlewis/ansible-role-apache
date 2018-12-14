@@ -3,10 +3,6 @@ apache_path: /etc/apache2
 apache_sites_available_path: /etc/apache2/sites-available
 apache_sites_enabled_path: /etc/apache2/sites-enabled
 
-apache_required_modules:
-- name: headers
-- name: ssl
-
 __apache_pid_file: /var/run/apache2/apache2.pid
 __apache_run_path: /var/run/apache2
 __apache_lock_path: /var/lock/apache2
