@@ -64,10 +64,10 @@ By default, Apache will include any configuration files found in either the `con
 
 ```yaml
 apache_modules:
-  - name: headers
-  - name: rewrite
-  - name: ssl
-    state: absent
+- name: headers
+- name: rewrite
+- name: ssl
+  state: absent
 ```
 Use the `apache_modules` variable to enable/disable Apache modules. The `name` attribute is required and should be the name of the module to enable/disable. By default, any listed module will be enabled. To disable a module add the `state` attribute with a value of `absent`.
 
