@@ -29,7 +29,7 @@
   <Directory {{ directory.rule }}>
 {% if directory.block is defined %}
     {{ directory.block | indent(4) }}
-{%- endif %}
+{% endif %}
   </Directory>
 {% endfor %}
 
@@ -37,7 +37,7 @@
   <FilesMatch {{ filesmatch.rule }}>
 {% if filesmatch.block is defined  %}
     {{ filesmatch.block | indent(4) }}
-{%- endif %}
+{% endif %}
   </FilesMatch>
 {% endfor %}
 
@@ -90,7 +90,7 @@
     <Directory {{ directory.rule }}>
 {% if directory.block is defined %}
       {{ directory.block | indent(6) }}
-{%- endif %}
+{% endif %}
     </Directory>
 {% endfor %}
 
@@ -98,7 +98,7 @@
     <FilesMatch {{ filesmatch.rule }}>
 {% if filesmatch.block is defined  %}
       {{ filesmatch.block | indent(6) }}
-{%- endif %}
+{% endif %}
     </FilesMatch>
 {% endfor %}
 
